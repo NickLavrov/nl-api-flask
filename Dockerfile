@@ -1,25 +1,39 @@
-# Use an official Python runtime as the base image
-FROM python:3.9-slim
+FROM python:3.11.5-slim
 
-# Set the working directory in the container
+ENV PIP_DEFAULT_TIMEOUT=100 \
+    # Allow statements and log messages to immediately appear
+    PYTHONUNBUFFERED=1 \
+    # disable a pip version check to reduce run-time & log-spam
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    # cache is useless in docker image, so disable to reduce image size
+    PIP_NO_CACHE_DIR=1
+
 WORKDIR /app
 
-# Copy the requirements file into the container at /app
+# Separate out system package updates and python package updates for smaller layers
+RUN set -ex \
+    # Create a non-root user
+    && addgroup --system --gid 1001 appgroup \
+    && adduser --system --uid 1001 --gid 1001 --no-create-home appuser \
+    # Upgrade the package index and install security upgrades
+    && apt-get update \
+    && apt-get upgrade -y \
+    # Clean up
+    && apt-get autoremove -y \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt /app
 
-# Install the required packages using the requirements file
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -r requirements.txt
 
-# Copy the rest of the app into the container at /app
 COPY . /app
 
-# Define the environment variable
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
 
-# Expose port 5000 for the Flask app to listen on
 EXPOSE 5000
 
-# Run app.py when the container launches
 CMD ["flask", "run"]
 
+USER appuser
