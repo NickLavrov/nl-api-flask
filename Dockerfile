@@ -1,4 +1,4 @@
-FROM python:3.11.5-slim
+FROM python:3.11.5-slim AS base
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     # Allow statements and log messages to immediately appear
@@ -34,6 +34,19 @@ ENV FLASK_RUN_HOST=0.0.0.0
 
 EXPOSE 5000
 
+# Development image includes dev packages
+FROM base AS development
+
+RUN pip install -r requirements-dev.txt
+
+CMD ["flask", "run"]
+
+USER appuser
+
+# Production image without dev packages
+FROM base AS production
+
+# TODO: Convert this to a more suitable production command, like gunicorn
 CMD ["flask", "run"]
 
 USER appuser
