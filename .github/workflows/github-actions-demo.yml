@@ -3,7 +3,7 @@ name: ci
 on:
   push:
     branches:
-      - "main"
+      - "setup-github-actions-build-test-and-push"
 
 env:
   AWS_REGION: us-west-2
