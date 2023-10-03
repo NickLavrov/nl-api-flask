@@ -12,4 +12,4 @@ def client():
 def test_ping_route(client):
     response = client.get('/ping')
     assert response.status_code == 200
-    assert response.get_json() == {'message': 'pong', 'api': 'flask'}
+    assert response.get_json() == {'message': 'pong', 'api': 'flask_FAIL'}
