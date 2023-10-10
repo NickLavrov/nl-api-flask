@@ -9,8 +9,12 @@ class Ping(Resource):
     def get(self):
         return {'message': 'pong', 'api': 'flask'}
 
+class Pong(Resource):
+    def get(self):
+        return {'message': 'ping', 'api': 'flask'}
 
 api.add_resource(Ping, '/ping')
+api.add_resource(Pong, '/pong')
 
 if __name__ == '__main__':
     app.run(debug=True)
