@@ -60,6 +60,7 @@ jobs:
           repository: NickLavrov/nl-api-argocd-config
           ref: preprod
           path: nl-api-argocd-config
+          token: ${{secrets.PUSH_TOKEN}}
 
       - name: Update helm values
         working-directory: ./nl-api-argocd-config/apps/preprod
@@ -75,10 +76,13 @@ jobs:
         working-directory: ./nl-api-argocd-config/apps/preprod
         run: |
           git config user.email "github-actions@github.com"
-          git config user.name "github-actions[bot]"
+          git config user.name "$USERNAME"
           git add nl-api-flask.yaml
           git commit -m "Update image tag"
-          git push
+          git push https://$USERNAME:$REPO_KEY@github.com/NickLavrov/nl-api-argocd-config.git
+        env:
+          REPO_KEY: ${{ secrets.PUSH_TOKEN }}
+          USERNAME: github-actions[bot]
 
   on-failure:
     name: Print failure message
