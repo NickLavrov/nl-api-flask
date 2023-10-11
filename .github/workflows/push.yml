@@ -54,6 +54,20 @@ jobs:
           tags: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ steps.vars.outputs.sha_short }}
           target: production
 
+      - name: Checkout argocd config repo
+        uses: actions/checkout@v4
+        with:
+          repository: NickLavrov/nl-api-argocd-config
+          ref: preprod
+          path: nl-api-argocd-config
+
+      - name: Update helm values
+        working-directory: ./nl-api-argocd-config
+        run: |
+          if [[ "$(git status --porcelain)" != "" ]]; then
+          ls
+          fi
+
   on-failure:
     name: Print failure message
     runs-on: ubuntu-latest
