@@ -62,13 +62,21 @@ jobs:
           path: nl-api-argocd-config
 
       - name: Update helm values
-        working-directory: ./nl-api-argocd-config
+        working-directory: ./nl-api-argocd-config/apps/preprod
         run: |
-          if [[ "$(git status --porcelain)" != "" ]]; then
-          ls
+          if [[ "$(git status --porcelain)" == "" ]]; then
+            cat nl-api-flask.yaml
+            sed -i 's/^\( *tag: \).*/\1NEWTAG/' nl-api-flask.yaml
+            echo "SED RAN"
+            cat nl-api-flask.yaml
           fi
-          echo hi
-          ls -a
+
+      - name: Commit new file
+        working-directory: ./nl-api-argocd-config/apps/preprod
+        run: |
+          git add nl-api-flask.yaml
+          git commit -m "Update image tag"
+          git push
 
   on-failure:
     name: Print failure message
