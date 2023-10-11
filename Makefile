@@ -2,14 +2,14 @@
 PROJECT_NAME=nl-api-flask
 
 # Makefile commands
-.PHONY: dev tests build-dev
+.PHONY: dev test build-dev
 
 # Run the development environment
 dev:
 	docker-compose up web_dev
 
 # Run tests
-tests:
+test:
 	docker-compose run --rm web_dev python -m pytest
 
 # Build the development image
