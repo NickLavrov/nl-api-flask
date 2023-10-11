@@ -1,8 +1,8 @@
-name: push-image
+name: push-image-and-deploy-preprod
 
 on:
   workflow_run:
-    workflows: ["ci"]
+    workflows: ["run-tests"]
     types: [completed]
     branches: ["main"]
 

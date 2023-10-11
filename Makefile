@@ -9,7 +9,7 @@ dev:
 	docker-compose up web_dev
 
 # Run tests
-tests:
+test:
 	docker-compose run --rm web_dev python -m pytest
 
 # Build the development image
