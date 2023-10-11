@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   push-image:
-    name: Push image
+    name: Push image and deploy to preprod
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
