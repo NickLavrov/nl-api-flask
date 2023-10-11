@@ -67,6 +67,8 @@ jobs:
           if [[ "$(git status --porcelain)" != "" ]]; then
           ls
           fi
+          echo hi
+          ls -a
 
   on-failure:
     name: Print failure message
