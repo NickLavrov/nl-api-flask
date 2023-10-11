@@ -66,7 +66,7 @@ jobs:
         run: |
           if [[ "$(git status --porcelain)" == "" ]]; then
             cat nl-api-flask.yaml
-            sed -i 's/^\( *tag: \).*/\1NEWTAG/' nl-api-flask.yaml
+            sed -i 's/^\( *tag: \).*/\1${{ steps.vars.outputs.sha_short }}/' nl-api-flask.yaml
             echo "SED RAN"
             cat nl-api-flask.yaml
           fi
@@ -74,6 +74,8 @@ jobs:
       - name: Commit new file
         working-directory: ./nl-api-argocd-config/apps/preprod
         run: |
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
           git add nl-api-flask.yaml
           git commit -m "Update image tag"
           git push
