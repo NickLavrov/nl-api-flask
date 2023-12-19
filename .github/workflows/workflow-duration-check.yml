@@ -27,7 +27,7 @@ jobs:
 
     - name: Run Workflow Duration Script
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
         EXCLUDED_BRANCHES: ${{ github.event.inputs.excluded_branches }}
       run: |
         python .github/scripts/github-workflow-duration-check.py
