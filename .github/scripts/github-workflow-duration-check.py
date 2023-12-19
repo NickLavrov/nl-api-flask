@@ -6,8 +6,8 @@ import requests
 GITHUB_API = 'https://api.github.com'
 REPO_OWNER = 'NickLavrov'
 REPO_NAME = 'nl-api-flask'
-WORKFLOW_FILE = 'push-image-and-deploy-preprod.yml'
-JOB_NAME = 'push-image'
+WORKFLOW_FILE = 'run-tests.yml'
+JOB_NAME = 'Build and test'
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', '')
 EXCLUDED_BRANCHES = os.getenv('EXCLUDED_BRANCHES', '').split(',')
 NUM_RUNS = 50  # Number of runs to consider
