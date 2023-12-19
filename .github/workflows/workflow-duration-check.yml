@@ -1,0 +1,33 @@
+name: Workflow Duration Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      excluded_branches:
+        description: 'Branches to exclude (comma-separated)'
+        required: true
+        default: ''
+
+jobs:
+  check_duration:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    # Since this is a simple dependency, install here
+    - name: Install dependencies
+      run: |
+        pip install requests
+
+    - name: Run Workflow Duration Script
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        EXCLUDED_BRANCHES: ${{ github.event.inputs.excluded_branches }}
+      run: |
+        python .github/scripts/github-workflow-duration-check.py
